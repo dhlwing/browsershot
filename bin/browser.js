@@ -9,6 +9,9 @@ const getOutput = async (page, request) => {
         output = await page.evaluate(request.options.pageFunction);
 
         return output;
+    } else if (request.action == 'cookies') {
+        output = await page.cookies();
+        return output;
     }
 
     output = await page[request.action](request.options);

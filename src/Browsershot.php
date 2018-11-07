@@ -427,6 +427,13 @@ class Browsershot
         return $this->callBrowser($command);
     }
 
+    public function getCookies(): string
+    {
+        $command = $this->createGetcookiesCommand();
+
+        return $this->callBrowser($command);
+    }
+
     public function screenshot(): string
     {
         $command = $this->createScreenshotCommand();
@@ -478,6 +485,15 @@ class Browsershot
 
         return $this->createCommand($url, 'content');
     }
+
+    public function createGetcookiesCommand(): array
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
+        return $this->createCommand($url, 'cookies');
+    }
+
+    
 
     public function createScreenshotCommand($targetPath = null): array
     {
@@ -579,7 +595,7 @@ class Browsershot
     protected function callBrowser(array $command)
     {
         $fullCommand = $this->getFullCommand($command);
-
+        // echo $fullCommand;
         $process = (new Process($fullCommand))->setTimeout($this->timeout);
 
         $process->run();
